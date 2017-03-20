@@ -39,7 +39,7 @@ The only real change made on the [JS client side](https://github.com/nielsutrech
 
 To this:
 
-    stompClient = Stomp.client('ws://localhost:8080/hello');
+    stompClient = Stomp.client('ws://localhost:8090/hello');
     
 ## The Java client
 

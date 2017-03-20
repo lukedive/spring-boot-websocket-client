@@ -8,7 +8,7 @@ function setConnected(connected) {
 }
 
 function connect() {
-    stompClient = Stomp.client('ws://localhost:8080/hello');
+    stompClient = Stomp.client('ws://localhost:8090/hello');
     stompClient.debug = null;
     stompClient.connect({}, function(frame) {
         setConnected(true);
