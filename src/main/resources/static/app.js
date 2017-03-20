@@ -7,6 +7,32 @@ function setConnected(connected) {
     document.getElementById('response').innerHTML = '';
 }
 
+
+function string2Bin(str) {
+	  var result = [];
+	  for (var i = 0; i < str.length; i++) {
+	    result.push(str.charCodeAt(i));
+	  }
+	  return result;
+	}
+
+	function bin2String(array) {
+	  return String.fromCharCode.apply(String, array);
+	}
+
+function connectBinary() {
+    stompClient = Stomp.client('ws://localhost:8090/hello-binary');
+    stompClient.debug = null;
+    stompClient.connect({}, function(frame) {
+        setConnected(true);
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/greetings-binary', function(greeting){
+            showGreeting(bin2String(greeting));
+        });
+    });
+}
+
+
 function connect() {
     stompClient = Stomp.client('ws://localhost:8090/hello');
     stompClient.debug = null;
@@ -30,6 +56,11 @@ function disconnect() {
 function sendName() {
     var name = document.getElementById('name').value;
     stompClient.send("/app/hello", {}, JSON.stringify({ 'name': name }));
+}
+
+function sendNameBinary() {
+    var name = document.getElementById('name').value;
+    stompClient.send("/app/hello-binary", {}, stringToBin('yo gangsta'));
 }
 
 function showGreeting(message) {

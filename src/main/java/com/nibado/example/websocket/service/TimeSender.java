@@ -30,4 +30,12 @@ public class TimeSender {
 		log.info("Time broadcast: {}", time);
 		broker.convertAndSend("/topic/greetings", new Greeting("Current time is " + time));
 	}
+	
+	@Scheduled(fixedRate = 5000)
+	public void runBinary() {
+		String time = LocalTime.now().format(TIME_FORMAT);
+
+		log.info("Time broadcast binary: {}", time);
+		broker.convertAndSend("/topic/greetings-binary", ("Current time is " + time).getBytes());
+	}
 }
