@@ -11,29 +11,33 @@ import com.nibado.example.websocket.service.Greeting;
 
 public class MySessionHandler extends StompSessionHandlerAdapter {
 
-	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MySessionHandler.class);
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MySessionHandler.class);
 
-	@Override
-	public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-		session.subscribe("/topic/greetings", this);
-		session.send("/app/hello", "{\"name\":\"Client\"}".getBytes());
+    @Override
+    public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+        session.subscribe("/topic/greetings", this);
+        session.send("/app/hello", "{\"name\":\"Client\"}".getBytes());
 
-		log.info("New session: {}", session.getSessionId());
-	}
+        log.info("New session: {}", session.getSessionId());
+    }
 
-	@Override
-	public void handleException(StompSession session, StompCommand command, StompHeaders headers, byte[] payload,
-			Throwable exception) {
-		exception.printStackTrace();
-	}
+    @Override
+    public void handleException(StompSession session, StompCommand command, StompHeaders headers, byte[] payload,
+            Throwable exception) {
+        exception.printStackTrace();
+    }
 
-	@Override
-	public Type getPayloadType(StompHeaders headers) {
-		return Greeting.class;
-	}
+    @Override
+    public Type getPayloadType(StompHeaders headers) {
+        return Greeting.class;
+    }
 
-	@Override
-	public void handleFrame(StompHeaders headers, Object payload) {
-		log.info("Received: {}", ((Greeting) payload).getContent());
-	}
+    @Override
+    public void handleFrame(StompHeaders headers, Object payload) {
+        if (payload instanceof Greeting) {
+            log.info("Received greeting: {}", ((Greeting) payload).getContent());
+        } else {
+            log.info("Received: {}", payload);
+        }
+    }
 }

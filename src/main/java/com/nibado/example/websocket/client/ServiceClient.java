@@ -1,13 +1,18 @@
 package com.nibado.example.websocket.client;
 
+import java.util.Base64;
+import java.util.Scanner;
+
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
-
-import java.util.Scanner;
 
 public class ServiceClient {
     public static void main(String... argv) {
@@ -17,8 +22,32 @@ public class ServiceClient {
         stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
 
         String url = "ws://127.0.0.1:8090/hello";
+        
+        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
+        String auth = "user" + ":" + "password";
+        headers.add("Authorization", "Basic " + new String(Base64.getEncoder().encode(auth.getBytes())));
+        
         StompSessionHandler sessionHandler = new MySessionHandler();
-        stompClient.connect(url, sessionHandler);
+        
+        ListenableFuture<StompSession> lf = stompClient.connect(url, headers, sessionHandler);
+        
+        lf.addCallback(new ListenableFutureCallback<StompSession>() {
+
+            @Override
+            public void onSuccess(StompSession result) {
+                System.out.println(result);
+                
+            }
+
+            @Override
+            public void onFailure(Throwable ex) {
+                System.out.println(ex);
+                ex.printStackTrace();
+                
+            }
+        });
+     
+        
 
         new Scanner(System.in).nextLine(); //Don't close immediately.
     }

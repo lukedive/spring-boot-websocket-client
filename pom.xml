@@ -14,6 +14,7 @@
         <spring.boot.version>1.5.2.RELEASE</spring.boot.version>
         <slf4j.version>1.7.13</slf4j.version>
         <logback.version>1.1.3</logback.version>
+        <spring.security.version>4.2.2.RELEASE</spring.security.version>
     </properties>
 
     <dependencies>
@@ -28,6 +29,11 @@
             <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-security</artifactId>
+        	<version>${spring.boot.version}</version>
+    	</dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
@@ -36,6 +42,16 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>org.springframework.security</groupId>
+        	<artifactId>spring-security-data</artifactId>
+        	<version>${spring.security.version}</version>
+    	</dependency>     
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-messaging</artifactId>
+           	<version>${spring.security.version}</version>
         </dependency>
     </dependencies>
 
