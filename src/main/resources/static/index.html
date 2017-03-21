@@ -3,20 +3,25 @@
     <head>
         <title>Hello WebSocket</title>
     </head>
-    <body onload="disconnect()">
+    <body onload="disconnect(); disconnectBinary()">
         <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable
             Javascript and reload this page!</h2></noscript>
         <div>
             <div>
                 <button id="connect" onclick="connect();">Connect</button>
-                <button id="connect" onclick="connectBinary();">Connect binary</button>
+                <button id="connectBinary" onclick="connectBinary();">Connect binary</button>
                 <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
+                <button id="disconnectBinary" disabled="disabled" onclick="disconnectBinary();">Disconnect binary</button>
             </div>
             <div id="conversationDiv">
                 <label>What is your name?</label><input type="text" id="name" />
                 <button id="sendName" onclick="sendName();">Send</button>
-                <button id="sendNameBinary" onclick="sendNameBinary();">Send binary</button>
                 <p id="response"></p>
+            </div>
+            <div id="conversationDivBinary">
+                <label>What is your binary name?</label><input type="text" id="nameBinary" />
+                <button id="sendNameBinary" onclick="sendNameBinary();">Send binary</button>
+                <p id="responseBinary"></p>
             </div>
         </div>
         <script src="stomp.js"></script>

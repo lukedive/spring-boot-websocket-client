@@ -1,4 +1,5 @@
 var stompClient = null;
+var stompClientBinary = null;
 
 function setConnected(connected) {
     document.getElementById('connect').disabled = connected;
@@ -7,8 +8,15 @@ function setConnected(connected) {
     document.getElementById('response').innerHTML = '';
 }
 
+function setConnectedBinary(connected) {
+    document.getElementById('connectBinary').disabled = connected;
+    document.getElementById('disconnectBinary').disabled = !connected;
+    document.getElementById('conversationDivBinary').style.visibility = connected ? 'visible' : 'hidden';
+    document.getElementById('responseBinary').innerHTML = '';
+}
 
-function string2Bin(str) {
+
+function stringToBin(str) {
 	  var result = [];
 	  for (var i = 0; i < str.length; i++) {
 	    result.push(str.charCodeAt(i));
@@ -16,18 +24,18 @@ function string2Bin(str) {
 	  return result;
 	}
 
-	function bin2String(array) {
+function bin2String(array) {
 	  return String.fromCharCode.apply(String, array);
-	}
+}
 
 function connectBinary() {
     stompClient = Stomp.client('ws://localhost:8090/hello-binary');
     stompClient.debug = null;
     stompClient.connect({}, function(frame) {
-        setConnected(true);
+        setConnectedBinary(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/greetings-binary', function(greeting){
-            showGreeting(bin2String(greeting));
+            showGreetingBinary(greeting.body);
         });
     });
 }
@@ -53,14 +61,22 @@ function disconnect() {
     console.log("Disconnected");
 }
 
+function disconnectBinary() {
+    if (stompClientBinary != null) {
+        stompClientBinary.disconnect();
+    }
+    setConnectedBinary(false);
+    console.log("Disconnected binary");
+}
+
 function sendName() {
     var name = document.getElementById('name').value;
     stompClient.send("/app/hello", {}, JSON.stringify({ 'name': name }));
 }
 
 function sendNameBinary() {
-    var name = document.getElementById('name').value;
-    stompClient.send("/app/hello-binary", {}, stringToBin('yo gangsta'));
+    var name = document.getElementById('nameBinary').value;
+    stompClient.send("/app/hello-binary", {}, name);
 }
 
 function showGreeting(message) {
@@ -71,3 +87,10 @@ function showGreeting(message) {
     response.appendChild(p);
 }
 
+function showGreetingBinary(message) {
+    var response = document.getElementById('responseBinary');
+    var p = document.createElement('p');
+    p.style.wordWrap = 'break-word';
+    p.appendChild(document.createTextNode(message));
+    response.appendChild(p);
+}
