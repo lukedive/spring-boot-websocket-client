@@ -21,7 +21,7 @@ public class GreetingController {
     @SendTo("/topic/greetings-binary")
     public byte[] greetingBinary(byte[] message) throws Exception {
         String msg = new String(message, "UTF-8");
-		log.info("Received hello: {}", msg);
-        return ("Hello, " + msg + "!").getBytes();
+		log.info("Received hello binary: {}", msg);
+        return ("Hello binary, " + msg + "!").getBytes();
     }
 }

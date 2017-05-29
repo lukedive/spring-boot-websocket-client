@@ -36,6 +36,6 @@ public class TimeSender {
 		String time = LocalTime.now().format(TIME_FORMAT);
 
 		log.info("Time broadcast binary: {}", time);
-		broker.convertAndSend("/topic/greetings-binary", ("Current time is " + time).getBytes());
+		broker.convertAndSend("/topic/greetings-binary", ("Current binary time is " + time).getBytes());
 	}
 }
