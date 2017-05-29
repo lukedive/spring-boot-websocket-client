@@ -14,6 +14,7 @@ public class MySessionHandlerBinary extends StompSessionHandlerAdapter {
 	@Override
 	public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
 		session.subscribe("/topic/greetings-binary", this);
+		session.subscribe("/user/queue/horray", this);
 		session.send("/app/hello-binary", "Sie ma".getBytes());
 
 		log.info("New session: {}", session.getSessionId());
@@ -33,5 +34,6 @@ public class MySessionHandlerBinary extends StompSessionHandlerAdapter {
 	@Override
 	public void handleFrame(StompHeaders headers, Object payload) {
 		log.info("Received: {}", new String ((byte[]) payload));
+		
 	}
 }
