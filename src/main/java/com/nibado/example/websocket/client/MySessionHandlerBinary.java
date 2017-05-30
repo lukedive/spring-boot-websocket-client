@@ -32,6 +32,6 @@ public class MySessionHandlerBinary extends StompSessionHandlerAdapter {
 
 	@Override
 	public void handleFrame(StompHeaders headers, Object payload) {
-		log.info("Received: {}", new String ((byte[]) payload));
+		log.info("Received: headers["+headers+"] {}", new String ((byte[]) payload));
 	}
 }

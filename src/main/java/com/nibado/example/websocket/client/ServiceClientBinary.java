@@ -4,10 +4,12 @@ import org.springframework.messaging.converter.ByteArrayMessageConverter;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompSessionHandler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+import java.util.Base64;
 import java.util.Scanner;
 
 public class ServiceClientBinary {
@@ -18,8 +20,13 @@ public class ServiceClientBinary {
         stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
 
         String url = "ws://127.0.0.1:8090/hello-binary";
+        
+        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
+        String auth = "user" + ":" + "password";
+        headers.add("Authorization", "Basic " + new String(Base64.getEncoder().encode(auth.getBytes())));
+        
         StompSessionHandler sessionHandler = new MySessionHandlerBinary();
-        stompClient.connect(url, sessionHandler);
+        stompClient.connect(url, headers,  sessionHandler);
 
         new Scanner(System.in).nextLine(); //Don't close immediately.
     }
