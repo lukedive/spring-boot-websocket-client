@@ -20,13 +20,17 @@ public class ServiceClientBinary {
         stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
 
         String url = "ws://127.0.0.1:8090/hello-binary";
-        
-        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
-        String auth = "user" + ":" + "password";
-        headers.add("Authorization", "Basic " + new String(Base64.getEncoder().encode(auth.getBytes())));
-        
         StompSessionHandler sessionHandler = new MySessionHandlerBinary();
-        stompClient.connect(url, headers,  sessionHandler);
+        
+        
+        String plainCredentials="kowalski:password";
+        String base64Credentials = Base64.getEncoder().encodeToString(plainCredentials.getBytes());
+
+        final WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
+        headers.add("Authorization", "Basic " + base64Credentials);
+
+                
+        stompClient.connect(url, headers, sessionHandler);
 
         new Scanner(System.in).nextLine(); //Don't close immediately.
     }

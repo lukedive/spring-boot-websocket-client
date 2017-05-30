@@ -1,5 +1,6 @@
 package com.nibado.example.websocket.service;
 
+import java.security.Principal;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -38,4 +39,11 @@ public class TimeSender {
 		log.info("Time broadcast binary: {}", time);
 		broker.convertAndSend("/topic/greetings-binary", ("Current time is " + time).getBytes());
 	}
+	
+	
+//	@Scheduled(fixedDelay=5000)
+//	public void sendMessages(Principal principal) {
+//		broker
+//	        .convertAndSendToUser(principal.getName(), "/queue/horray", "Horray, " + principal.getName() + "!");
+//	}
 }
