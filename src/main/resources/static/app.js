@@ -29,7 +29,7 @@ function bin2String(array) {
 }
 
 function connectBinary() {
-    stompClient = Stomp.client('ws://localhost:8090/hello-binary');
+    stompClient = Stomp.client('ws://localhost:8090/ws-binary');
     stompClient.debug = null;
     stompClient.connect({}, function(frame) {
         setConnectedBinary(true);
@@ -37,12 +37,15 @@ function connectBinary() {
         stompClient.subscribe('/topic/greetings-binary', function(greeting){
             showGreetingBinary(greeting.body);
         });
+        stompClient.subscribe('/user/queue/horray', function(greeting){
+            showGreetingBinary(greeting.body);
+        });
     });
 }
 
 
 function connect() {
-    stompClient = Stomp.client('ws://localhost:8090/hello');
+    stompClient = Stomp.client('ws://localhost:8090/ws');
     stompClient.debug = null;
     stompClient.connect({}, function(frame) {
         setConnected(true);

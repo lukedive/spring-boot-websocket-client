@@ -14,6 +14,9 @@ public class UserDetailsServiceService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        if (username.equals("kowalski")) {
+//            throw new UsernameNotFoundException("Nie znam cię !");
+//        }
         return new User(username, "password", new ArrayList<GrantedAuthority>());
     }
 

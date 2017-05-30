@@ -14,23 +14,26 @@ import java.util.Scanner;
 
 public class ServiceClientBinary {
     public static void main(String... argv) {
+        try {
         WebSocketClient webSocketClient = new StandardWebSocketClient();
         WebSocketStompClient stompClient = new WebSocketStompClient(webSocketClient);
         stompClient.setMessageConverter(new ByteArrayMessageConverter());
         stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
 
-        String url = "ws://127.0.0.1:8090/hello-binary";
+        String url = "ws://127.0.0.1:8090/ws-binary";
         StompSessionHandler sessionHandler = new MySessionHandlerBinary();
         
+        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
+        String auth = "kowalski" + ":" + "password";
+        headers.add("Authorization", "Basic " + new String(Base64.getEncoder().encode(auth.getBytes())));
         
-        String plainCredentials="kowalski:password";
-        String base64Credentials = Base64.getEncoder().encodeToString(plainCredentials.getBytes());
-
-        final WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
-        headers.add("Authorization", "Basic " + base64Credentials);
 
                 
         stompClient.connect(url, headers, sessionHandler);
+        
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         new Scanner(System.in).nextLine(); //Don't close immediately.
     }

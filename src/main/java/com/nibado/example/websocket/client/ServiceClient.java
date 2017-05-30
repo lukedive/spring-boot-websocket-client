@@ -21,7 +21,7 @@ public class ServiceClient {
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
         stompClient.setTaskScheduler(new ConcurrentTaskScheduler());
 
-        String url = "ws://127.0.0.1:8090/hello";
+        String url = "ws://127.0.0.1:8090/ws";
         
         WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
         String auth = "user" + ":" + "password";

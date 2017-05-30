@@ -41,9 +41,10 @@ public class TimeSender {
 	}
 	
 	
-//	@Scheduled(fixedDelay=5000)
-//	public void sendMessages(Principal principal) {
-//		broker
-//	        .convertAndSendToUser(principal.getName(), "/queue/horray", "Horray, " + principal.getName() + "!");
-//	}
+	@Scheduled(fixedRate=5000)
+	public void sendMessages() {
+	    log.info("Sending: Horray, only for you kowalski!");
+		broker
+	        .convertAndSendToUser("kowalski", "/queue/horray", "Horray, only for you kowalski!".getBytes());
+	}
 }
